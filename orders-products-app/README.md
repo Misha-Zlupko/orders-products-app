@@ -98,7 +98,8 @@
 | `types/`                | Общие TypeScript‑типы (orders, products, cart, auth).                                                                                                   |
 | `utils/`                | Хелперы (`cartUtils`, `dateFormatter` и др.).                                                                                                           |
 | `locales/`              | Файлы переводов i18n (`uk.json`, `en.json`).                                                                                                            |
-| `server.js`             | Кастомный сервер: Next.js + Socket.io для счётчика вкладок.                                                                                             |
+| `server.js`             | Кастомный сервер: Next.js + Socket.io для счётчика вкладок (локально / Docker).                                                                          |
+| `socket-server/`        | Отдельный минимальный Socket.io‑сервер для деплоя на Railway/Render; нужен для работы счётчика сессий на Vercel (см. раздел 9).                        |
 | `docs/ARCHITECTURE.md`  | Подробная архитектура и потоки данных.                                                                                                                  |
 | `docs/SCHEMA.md`        | Описание схемы БД и связей.                                                                                                                             |
 
@@ -242,3 +243,22 @@ npm run test:coverage
 6. При необходимости — запустить тесты (`npm run test`) и Docker‑сборку (`docker compose up --build`).
 
 Проект готов к проверке по чек‑листу ТЗ.
+
+---
+
+## 9. Деплой на Vercel и счётчик сессий (Socket.io)
+
+На **Vercel** нет постоянного процесса, поэтому встроенный Socket.io из `server.js` там не работает. Чтобы счётчик активных сессий работал и на Vercel:
+
+1. **Разверните отдельный Socket.io‑сервер** на любом хостинге с поддержкой WebSocket (например **Railway**, **Render**, **Fly.io**):
+   - В репозитории есть папка `socket-server/` — минимальный сервер только для счётчика сессий.
+   - Перейдите в `socket-server/`, выполните `npm install` и `npm start`. Для деплоя на Railway/Render укажите корень `socket-server` и команду `npm start`, порт задаётся переменной `PORT` (часто автоматически).
+   - Опционально: `ALLOWED_ORIGINS=https://your-app.vercel.app` (или `*` для любых доменов).
+
+2. **В настройках проекта на Vercel** добавьте переменную окружения:
+   - Имя: `NEXT_PUBLIC_SOCKET_URL`
+   - Значение: URL развёрнутого Socket‑сервера **без** пути, например `https://your-socket-server.railway.app`
+
+3. После следующего деплоя фронт на Vercel будет подключаться к этому серверу, и счётчик активных вкладок начнёт работать.
+
+Без `NEXT_PUBLIC_SOCKET_URL` на домене `*.vercel.app` счётчик показывать «тільки при локальному запуску» (или аналог) — это ожидаемое поведение.

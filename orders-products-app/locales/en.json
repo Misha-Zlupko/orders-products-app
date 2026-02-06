@@ -21,6 +21,7 @@
   "topMenu.sessions.one": "user",
   "topMenu.sessions.few": "users",
   "topMenu.sessions.many": "users",
+  "topMenu.sessions.onlyLocal": "only when running locally",
 
   "home.panelTitle": "Dashboard",
   "home.panelDesc": "Orders & Products — inventory and warehouse management system",

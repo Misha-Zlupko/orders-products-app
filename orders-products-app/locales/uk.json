@@ -21,6 +21,7 @@
   "topMenu.sessions.one": "користувач",
   "topMenu.sessions.few": "користувача",
   "topMenu.sessions.many": "користувачів",
+  "topMenu.sessions.onlyLocal": "тільки при локальному запуску",
 
   "home.panelTitle": "Панель керування",
   "home.panelDesc": "Orders & Products — система обліку надходжень та складських позицій",

@@ -12,11 +12,13 @@ import {
 interface SocketContextType {
   sessionsCount: number;
   isConnected: boolean;
+  socketUnavailable: boolean;
 }
 
 const SocketContext = createContext<SocketContextType>({
   sessionsCount: 0,
   isConnected: false,
+  socketUnavailable: false,
 });
 
 let sharedSocket: import("socket.io-client").Socket | null = null;
@@ -24,6 +26,7 @@ let sharedSocket: import("socket.io-client").Socket | null = null;
 export function SocketProvider({ children }: { children: ReactNode }) {
   const [sessionsCount, setSessionsCount] = useState(0);
   const [isConnected, setIsConnected] = useState(false);
+  const [socketUnavailable, setSocketUnavailable] = useState(false);
   const cleanupRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
@@ -32,10 +35,21 @@ export function SocketProvider({ children }: { children: ReactNode }) {
     const isSocketDisabled =
       typeof process !== "undefined" &&
       process.env.NEXT_PUBLIC_SOCKET_ENABLED === "false";
+    const externalSocketUrl =
+      typeof process !== "undefined"
+        ? process.env.NEXT_PUBLIC_SOCKET_URL
+        : undefined;
     const isVercel =
       typeof window !== "undefined" &&
       window.location.hostname.includes("vercel.app");
-    if (isSocketDisabled || isVercel) return;
+
+    // На Vercel без внешнего Socket-сервера сокет недоступен
+    if (isSocketDisabled || (isVercel && !externalSocketUrl)) {
+      setSocketUnavailable(true);
+      return;
+    }
+
+    const socketBaseUrl = externalSocketUrl ?? window.location.origin;
 
     let cancelled = false;
 
@@ -44,7 +58,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       if (cancelled) return null;
 
       if (!sharedSocket) {
-        sharedSocket = io(window.location.origin, {
+        sharedSocket = io(socketBaseUrl, {
           path: "/socket.io",
           transports: ["websocket", "polling"],
         });
@@ -84,7 +98,9 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <SocketContext.Provider value={{ sessionsCount, isConnected }}>
+    <SocketContext.Provider
+      value={{ sessionsCount, isConnected, socketUnavailable }}
+    >
       {children}
     </SocketContext.Provider>
   );

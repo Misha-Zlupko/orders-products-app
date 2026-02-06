@@ -15,7 +15,7 @@ function getSessionsLabel(count: number, t: (key: string) => string): string {
 }
 
 export default function TopMenuComponent() {
-  const { sessionsCount, isConnected } = useSocket();
+  const { sessionsCount, isConnected, socketUnavailable } = useSocket();
   const { t, locale } = useLocale();
   const [currentTime, setCurrentTime] = useState("--:--:--");
   const [currentDate, setCurrentDate] = useState("--.--.----");
@@ -116,9 +116,13 @@ export default function TopMenuComponent() {
           </svg>
         </div>
         <div>
-          <div className="fw-bold fs-5">{sessionsCount}</div>
+          <div className="fw-bold fs-5">
+            {socketUnavailable ? "—" : sessionsCount}
+          </div>
           <div className="small opacity-90">
-            {getSessionsLabel(sessionsCount, t)}
+            {socketUnavailable
+              ? t("topMenu.sessions.onlyLocal")
+              : getSessionsLabel(sessionsCount, t)}
           </div>
         </div>
       </div>
