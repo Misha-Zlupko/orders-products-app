@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import CartItem from "@/components/cart/CartItem";
+import CartItem from "../../components/cart/CartItemComponent";
 import CartSummary from "@/components/cart/CartSummaryComponent";
 import EmptyCart from "@/components/cart/EmptyCartComponent";
 import AlertModal from "@/components/common/AlertModalComponent";

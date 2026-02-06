@@ -1,3 +1,5 @@
+import type { User } from "@/types/auth";
+
 export interface NavItem {
   href: string;
   labelKey: string;
@@ -17,7 +19,7 @@ export interface SidebarProps {
   pathname: string;
   statsItems: StatItem[];
   cartStats: StatItem | null;
-  user: unknown;
+  user: User | null;
   isAuthenticated: boolean;
   logout: () => void;
 }
