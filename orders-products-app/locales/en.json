@@ -247,6 +247,8 @@
 
   "common.cancel": "Cancel",
   "common.close": "Close",
+  "meta.title": "Orders & Products",
+  "meta.description": "Orders and products management system. Test task.",
   "locale.uk": "Українська",
   "locale.en": "English"
 }

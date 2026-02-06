@@ -19,7 +19,7 @@ export default function ProductTable({ products }: ProductTableProps) {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("uk-UA", {
+    return date.toLocaleDateString(localeTag, {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
@@ -169,7 +169,7 @@ export default function ProductTable({ products }: ProductTableProps) {
             >
               <div className="d-flex align-items-center justify-content-center">
                 <span className="text-nowrap text-secondary text-uppercase small fw-semibold">
-                  Тип продукту
+                  {t("products.tableType")}
                 </span>
                 <div
                   style={{
@@ -231,7 +231,7 @@ export default function ProductTable({ products }: ProductTableProps) {
             <th className="border-0 py-3" style={{ textAlign: "center" }}>
               <div className="d-flex align-items-center justify-content-center">
                 <span className="text-secondary text-uppercase small fw-semibold">
-                  Назва приходу
+                  {t("products.tableOrderTitle")}
                 </span>
               </div>
             </th>
@@ -279,16 +279,16 @@ export default function ProductTable({ products }: ProductTableProps) {
                         {product.title}
                       </div>
                       <div className="small text-muted">
-                        Серійний: {product.serialNumber}
+                        {t("products.serial")} {product.serialNumber}
                       </div>
                       <div>
                         {product.isNew === 1 ? (
                           <span className="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-1 mt-1">
-                            Новий
+                            {t("products.badgeNew")}
                           </span>
                         ) : (
                           <span className="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3 py-1 mt-1">
-                            Б/В
+                            {t("products.badgeUsed")}
                           </span>
                         )}
                       </div>

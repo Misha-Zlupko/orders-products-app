@@ -15,7 +15,8 @@ export default function CartItem({
   onUpdateQuantity,
   onRemove,
 }: CartItemProps) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
+  const localeTag = locale === "uk" ? "uk-UA" : "en-GB";
   const handleQuantityChange = (newQuantity: number) => {
     if (newQuantity >= 1 && newQuantity <= item.maxQuantity) {
       onUpdateQuantity(item.id, newQuantity);
@@ -49,7 +50,7 @@ export default function CartItem({
                   {item.guarantee && (
                     <span className="badge bg-warning text-dark">
                       {t("cart.itemGuaranteeUntil", {
-                        date: formatDate(item.guarantee.end, "short"),
+                        date: formatDate(item.guarantee.end, "short", localeTag),
                       })}
                     </span>
                   )}

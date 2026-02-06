@@ -15,8 +15,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Orders & Products App",
-  description: "Тестовое задание",
+  title: "Orders & Products",
+  description: "Orders and products management system. Test task.",
 };
 
 export default function RootLayout({

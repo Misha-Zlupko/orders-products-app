@@ -247,6 +247,8 @@
 
   "common.cancel": "Скасувати",
   "common.close": "Закрити",
+  "meta.title": "Orders & Products",
+  "meta.description": "Система обліку замовлень та продуктів. Тестове завдання.",
   "locale.uk": "Українська",
   "locale.en": "English"
 }
