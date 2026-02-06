@@ -14,8 +14,8 @@ export default function Sidebar() {
   const pathname = usePathname();
   const { user, isAuthenticated, logout } = useAuth();
   const cartState = useAppSelector((state) => state.cart) ?? initialCartState;
-  const cartItemCount = cartState.totalItems;
-  const cartTotalPrice = cartState.totalPrice;
+  const cartItemCount = cartState?.totalItems ?? 0;
+  const cartTotalPrice = cartState?.totalPrice ?? 0;
 
   const { navigationItems, cartStats } = useSidebarData({
     cartItemCount,

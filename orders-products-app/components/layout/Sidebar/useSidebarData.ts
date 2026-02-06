@@ -26,9 +26,10 @@ export function useSidebarData({
 
   const cartStats = useMemo(() => {
     if (cartItemCount <= 0) return null;
+    const price = Number(cartTotalPrice);
     return {
       labelKey: "nav.cart",
-      value: `${cartTotalPrice.toLocaleString()} USD`,
+      value: `${(Number.isNaN(price) ? 0 : price).toLocaleString()} USD`,
       badge: cartItemCount,
       highlight: true,
     };
