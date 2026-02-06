@@ -29,6 +29,14 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    const isSocketDisabled =
+      typeof process !== "undefined" &&
+      process.env.NEXT_PUBLIC_SOCKET_ENABLED === "false";
+    const isVercel =
+      typeof window !== "undefined" &&
+      window.location.hostname.includes("vercel.app");
+    if (isSocketDisabled || isVercel) return;
+
     let cancelled = false;
 
     const setup = async () => {
