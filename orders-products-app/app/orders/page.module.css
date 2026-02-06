@@ -1,0 +1,14 @@
+.ordersContainer {
+  display: flex;
+  flex: 1;
+  gap: 24px;
+  min-height: 0;
+  overflow: auto;
+}
+
+@media (max-width: 992px) {
+  .ordersContainer {
+    flex-direction: column;
+    gap: 16px;
+  }
+}

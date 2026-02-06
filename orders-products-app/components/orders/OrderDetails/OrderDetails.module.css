@@ -1,0 +1,6 @@
+@media (min-width: 991.98px) {
+  .responsive_overflow {
+    overflow-y: auto;
+    height: 100%;
+  }
+}
