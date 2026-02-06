@@ -1,0 +1,14 @@
+node_modules
+.next
+.git
+.gitignore
+.env*.local
+*.md
+.DS_Store
+__tests__
+*.test.ts
+*.test.tsx
+vitest.config.ts
+vitest.setup.ts
+coverage
+socket-server

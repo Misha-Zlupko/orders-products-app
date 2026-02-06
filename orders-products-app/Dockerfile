@@ -1,12 +1,11 @@
-FROM node:20-alpine AS base
+FROM node:20-slim AS base
 
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
 FROM base AS deps
-
-RUN apk add --no-cache libc6-compat
 
 COPY package.json package-lock.json ./
 
@@ -15,6 +14,7 @@ RUN npm ci
 FROM base AS builder
 
 COPY --from=deps /app/node_modules ./node_modules
+COPY package.json package-lock.json ./
 COPY . .
 
 RUN npm run build
