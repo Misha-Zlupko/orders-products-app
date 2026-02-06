@@ -9,7 +9,10 @@ FROM base AS deps
 
 COPY package.json package-lock.json ./
 
+# Для сборки нужны devDependencies (typescript, eslint и т.д.)
+ENV NODE_ENV=development
 RUN npm ci
+ENV NODE_ENV=production
 
 FROM base AS builder
 
