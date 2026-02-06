@@ -251,9 +251,10 @@ npm run test:coverage
 На **Vercel** нет постоянного процесса, поэтому встроенный Socket.io из `server.js` там не работает. Чтобы счётчик активных сессий работал и на Vercel:
 
 1. **Разверните отдельный Socket.io‑сервер** на любом хостинге с поддержкой WebSocket (например **Railway**, **Render**, **Fly.io**):
-   - В репозитории есть папка `socket-server/` — минимальный сервер только для счётчика сессий.
-   - Перейдите в `socket-server/`, выполните `npm install` и `npm start`. Для деплоя на Railway/Render укажите корень `socket-server` и команду `npm start`, порт задаётся переменной `PORT` (часто автоматически).
-   - Опционально: `ALLOWED_ORIGINS=https://your-app.vercel.app` (или `*` для любых доменов).
+   - В репозитории папка `socket-server/` — минимальный сервер только для счётчика сессий.
+   - **Важно:** укажите **Root Directory** так, чтобы билд видел папку `socket-server` с `package.json`. Например, если структура репозитория `orders-products-app/orders-products-app/socket-server/`, то Root Directory = `orders-products-app/orders-products-app/socket-server`.
+   - Локально: `cd socket-server`, `npm install`, `npm start`. На хостинге обычно достаточно указать команду `npm start`; порт задаётся переменной `PORT` автоматически.
+   - Опционально: переменная `ALLOWED_ORIGINS=https://your-app.vercel.app` (или `*` для любых доменов).
 
 2. **В настройках проекта на Vercel** добавьте переменную окружения:
    - Имя: `NEXT_PUBLIC_SOCKET_URL`
