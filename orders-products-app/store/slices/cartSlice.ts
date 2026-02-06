@@ -2,13 +2,20 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CartItem, initialCartState } from "@/types/cart";
 import { calculateCartTotals } from "@/utils/cartUtils";
 
+function ensureItems(state: { items?: unknown[] }) {
+  if (!Array.isArray(state.items)) {
+    state.items = [];
+  }
+}
+
 const cartSlice = createSlice({
   name: "cart",
   initialState: initialCartState,
   reducers: {
     addItem: (state, action: PayloadAction<CartItem>) => {
+      ensureItems(state);
       const item = action.payload;
-      const existing = state.items.find((i) => i.id === item.id);
+      const existing = state.items!.find((i) => i.id === item.id);
       if (existing) {
         const maxQty = existing.maxQuantity ?? 100;
         existing.quantity = Math.min(existing.quantity + item.quantity, maxQty);
@@ -28,8 +35,9 @@ const cartSlice = createSlice({
       state,
       action: PayloadAction<{ id: number; quantity: number }>
     ) => {
+      ensureItems(state);
       const { id, quantity } = action.payload;
-      const item = state.items.find((i) => i.id === id);
+      const item = state.items!.find((i) => i.id === id);
       if (item) {
         item.quantity = Math.max(
           1,
@@ -43,7 +51,8 @@ const cartSlice = createSlice({
     },
 
     removeItem: (state, action: PayloadAction<number>) => {
-      state.items = state.items.filter((i) => i.id !== action.payload);
+      ensureItems(state);
+      state.items = state.items!.filter((i) => i.id !== action.payload);
       const { totalItems, totalPrice } = calculateCartTotals(state.items);
       state.totalItems = totalItems;
       state.totalPrice = totalPrice;
