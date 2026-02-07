@@ -145,7 +145,9 @@ export default function ProductTable({ products }: ProductTableProps) {
   }
 
   return (
-    <div className={`${styles["product-table__wrapper"]} table-responsive rounded-3`}>
+    <div
+      className={`${styles["product-table__wrapper"]} table-responsive rounded-3`}
+    >
       <table className={`${styles["product-table__table"]} table-hover`}>
         <thead className={styles["product-table__thead"]}>
           <tr>
@@ -221,7 +223,10 @@ export default function ProductTable({ products }: ProductTableProps) {
                 </span>
               </div>
             </th>
-            <th className={styles["product-table__th"]} style={{ textAlign: "center" }}>
+            <th
+              className={styles["product-table__th"]}
+              style={{ textAlign: "center" }}
+            >
               <div className={styles["product-table__th-content"]}>
                 <span className="text-secondary text-uppercase small fw-semibold">
                   {t("products.tableOrderTitle")}
@@ -264,10 +269,14 @@ export default function ProductTable({ products }: ProductTableProps) {
                       <i className="bi bi-cpu" aria-hidden />
                     </div>
                     <div className={styles["product-table__cell-product-body"]}>
-                      <div className={styles["product-table__cell-product-title"]}>
+                      <div
+                        className={styles["product-table__cell-product-title"]}
+                      >
                         {product.title}
                       </div>
-                      <div className={styles["product-table__cell-product-serial"]}>
+                      <div
+                        className={styles["product-table__cell-product-serial"]}
+                      >
                         {t("products.serial")} {product.serialNumber}
                       </div>
                       <div>
@@ -301,7 +310,9 @@ export default function ProductTable({ products }: ProductTableProps) {
                   data-label={t("products.tableWarranty")}
                 >
                   <div className={styles["product-table__cell-warranty"]}>
-                    <div className={styles["product-table__cell-warranty-label"]}>
+                    <div
+                      className={styles["product-table__cell-warranty-label"]}
+                    >
                       {t("products.warrantyEnd")}
                     </div>
                     <div
@@ -324,7 +335,10 @@ export default function ProductTable({ products }: ProductTableProps) {
                       <div
                         className={`${styles["product-table__cell-warranty-status"]} ${styles["product-table__cell-warranty-status--expired"]}`}
                       >
-                        <i className="bi bi-shield-exclamation me-1" aria-hidden />
+                        <i
+                          className="bi bi-shield-exclamation me-1"
+                          aria-hidden
+                        />
                         {t("products.warrantyExpired")}
                       </div>
                     )}
@@ -353,7 +367,9 @@ export default function ProductTable({ products }: ProductTableProps) {
                       aria-hidden
                     />
                     <div>
-                      <div className={styles["product-table__cell-order-title"]}>
+                      <div
+                        className={styles["product-table__cell-order-title"]}
+                      >
                         {product.orderTitle}
                       </div>
                       <div className={styles["product-table__cell-order-date"]}>
@@ -369,15 +385,15 @@ export default function ProductTable({ products }: ProductTableProps) {
                 >
                   <div className={styles["product-table__cell-cart-wrap"]}>
                     <AddToCartButton
-                    product={{
-                      id: product.id,
-                      title: product.title,
-                      price: product.price,
-                      type: product.type,
-                      stock: 100,
-                      guarantee: product.guarantee,
-                    }}
-                  />
+                      product={{
+                        id: product.id,
+                        title: product.title,
+                        price: product.price,
+                        type: product.type,
+                        stock: 100,
+                        guarantee: product.guarantee,
+                      }}
+                    />
                   </div>
                 </td>
               </tr>
