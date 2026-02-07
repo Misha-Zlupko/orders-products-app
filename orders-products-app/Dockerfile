@@ -9,12 +9,15 @@ FROM base AS deps
 
 COPY package.json package-lock.json ./
 
-# Для сборки нужны devDependencies (typescript, eslint и т.д.)
 ENV NODE_ENV=development
 RUN npm ci
 ENV NODE_ENV=production
 
 FROM base AS builder
+
+# NEXT_PUBLIC_* мають бути доступні під час збірки (Railway передає як build-arg або через env)
+ARG NEXT_PUBLIC_GOOGLE_MAPS_KEY
+ENV NEXT_PUBLIC_GOOGLE_MAPS_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_KEY
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY package.json package-lock.json ./
