@@ -1,12 +1,12 @@
 /**
- * @param dateString - ISO date string
- * @param format - "short" (DD.MM.YYYY) or "long" (day month year)
- * @param locale - BCP 47 locale, e.g. "uk-UA" or "en-GB" (from i18n)
+ * @param dateString
+ * @param format
+ * @param locale
  */
 export function formatDate(
   dateString: string,
   format: "short" | "long" = "short",
-  locale: string = "uk-UA"
+  locale: string = "uk-UA",
 ) {
   const date = new Date(dateString);
   return format === "short"
