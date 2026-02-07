@@ -115,12 +115,15 @@ npm install
 
 ### 4.2. Переменные окружения
 
-Создайте `.env.local` и задайте как минимум:
+Скопируйте `.env.example` в `.env.local` и задайте значения:
 
 ```bash
 JWT_SECRET=your_jwt_secret_here
-PORT=3000          # по умолчанию 3000, можно не указывать
+PORT=3000
+NEXT_PUBLIC_GOOGLE_MAPS_KEY=ваш_ключ_google_maps   # опционально; без него карта на главной не отобразится
 ```
+
+Для карты на главной странице нужен ключ [Google Maps JavaScript API](https://console.cloud.google.com/apis/credentials). Без него показывается сообщение «NEXT_PUBLIC_GOOGLE_MAPS_KEY не заданий».
 
 ### 4.3. Запуск в dev‑режиме
 
@@ -256,10 +259,12 @@ npm run test:coverage
    - Локально: `cd socket-server`, `npm install`, `npm start`. На хостинге обычно достаточно указать команду `npm start`; порт задаётся переменной `PORT` автоматически.
    - Опционально: переменная `ALLOWED_ORIGINS=https://your-app.vercel.app` (или `*` для любых доменов).
 
-2. **В настройках проекта на Vercel** добавьте переменную окружения:
-   - Имя: `NEXT_PUBLIC_SOCKET_URL`
-   - Значение: URL развёрнутого Socket‑сервера **без** пути, например `https://your-socket-server.railway.app`
+2. **В настройках проекта на Vercel** добавьте переменные окружения:
+   - `NEXT_PUBLIC_SOCKET_URL` — URL развёрнутого Socket‑сервера **без** пути, например `https://your-socket-server.railway.app`
+   - **`NEXT_PUBLIC_GOOGLE_MAPS_KEY`** — ключ Google Maps API, чтобы на главной отображалась карта (иначе будет сообщение «NEXT_PUBLIC_GOOGLE_MAPS_KEY не заданий»).
 
-3. После следующего деплоя фронт на Vercel будет подключаться к этому серверу, и счётчик активных вкладок начнёт работать.
+   Где задать на Vercel: **Project → Settings → Environment Variables**. Добавьте переменную, выберите окружения (Production, Preview, Development) и **сохраните**. Затем сделайте **новый деплой** (Redeploy), потому что `NEXT_PUBLIC_*` подставляется в код **во время сборки**.
+
+3. После следующего деплоя фронт на Vercel будет подключаться к Socket‑серверу, и счётчик активных вкладок начнёт работать. Карта заработает, если задан `NEXT_PUBLIC_GOOGLE_MAPS_KEY`.
 
 Без `NEXT_PUBLIC_SOCKET_URL` на домене `*.vercel.app` счётчик показывать «тільки при локальному запуску» (или аналог) — это ожидаемое поведение.
