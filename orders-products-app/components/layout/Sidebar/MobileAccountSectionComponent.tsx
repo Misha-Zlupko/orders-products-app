@@ -24,7 +24,7 @@ export function MobileAccountSection({
       {isAuthenticated && user ? (
         <div className="d-flex flex-column gap-2">
           <div
-            className="d-flex align-items-center gap-2 px-3 py-2 rounded"
+            className="d-flex align-items-center gap-2 px-3 py-2 rounded text-white"
             style={{ backgroundColor: "rgb(16, 185, 129)" }}
           >
             <UserIcon />
@@ -45,9 +45,7 @@ export function MobileAccountSection({
           <AuthButton href="/auth/login" primary>
             {t("sidebar.login")}
           </AuthButton>
-          <AuthButton href="/auth/register">
-            {t("sidebar.register")}
-          </AuthButton>
+          <AuthButton href="/auth/register">{t("sidebar.register")}</AuthButton>
         </div>
       )}
     </section>

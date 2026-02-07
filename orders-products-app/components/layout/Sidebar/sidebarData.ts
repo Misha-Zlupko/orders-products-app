@@ -6,7 +6,13 @@ export const navItems: NavItem[] = [
   { href: "/products", labelKey: "nav.products", icon: ProductsIcon() },
 ];
 
-export const statsItems: StatItem[] = [
-  { labelKey: "sidebar.stats.ordersTotal", value: 24 },
-  { labelKey: "sidebar.stats.productsTotal", value: 156 },
-];
+/** Статистика формується динамічно в useSidebarData з ordersCount та productsCount */
+export function buildStatsItems(
+  ordersCount: number,
+  productsCount: number
+): StatItem[] {
+  return [
+    { labelKey: "sidebar.stats.ordersTotal", value: ordersCount },
+    { labelKey: "sidebar.stats.productsTotal", value: productsCount },
+  ];
+}

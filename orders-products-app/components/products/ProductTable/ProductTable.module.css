@@ -1,0 +1,400 @@
+/* Product-table — блок. Строгий БЭМ. */
+
+.product-table__wrapper {
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  overflow: auto;
+  max-height: min(70vh, 600px);
+}
+
+.product-table__table {
+  width: 100%;
+  min-width: 0;
+  margin-bottom: 0;
+  vertical-align: middle;
+  border-collapse: collapse;
+}
+
+.product-table__thead .product-table__th {
+  border: none;
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  white-space: nowrap;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: 0.75rem;
+  color: #6b7280;
+  background: #f9fafb;
+  cursor: pointer;
+}
+
+.product-table__thead .product-table__th:hover {
+  color: #059669;
+}
+
+.product-table__tbody .product-table__tr {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.product-table__tbody .product-table__tr:last-child {
+  border-bottom: none;
+}
+
+.product-table__td {
+  padding: 0.75rem 0.5rem;
+  border-color: #f3f4f6;
+  vertical-align: middle;
+}
+
+.product-table__th-content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.product-table__th-sort-icon {
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Элементы ячеек */
+.product-table__cell-product {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.product-table__cell-product-icon {
+  flex-shrink: 0;
+  min-width: 40px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background-color: #10b981;
+  color: #fff;
+  padding: 0.5rem;
+}
+
+.product-table__cell-product-body {
+  min-width: 0;
+}
+
+.product-table__cell-product-title {
+  font-weight: 600;
+  color: #111827;
+}
+
+.product-table__cell-product-serial {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.product-table__cell-product-badge {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+}
+
+.product-table__cell-product-badge--new {
+  background: rgba(59, 130, 246, 0.1);
+  color: #2563eb;
+}
+
+.product-table__cell-product-badge--used {
+  background: rgba(245, 158, 11, 0.1);
+  color: #d97706;
+}
+
+.product-table__cell-type-badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.product-table__cell-warranty {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.product-table__cell-warranty-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.product-table__cell-warranty-date {
+  font-weight: 600;
+}
+
+.product-table__cell-warranty-date--active {
+  color: #059669;
+}
+
+.product-table__cell-warranty-date--expired {
+  color: #dc2626;
+}
+
+.product-table__cell-warranty-status {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+}
+
+.product-table__cell-warranty-status--active {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+}
+
+.product-table__cell-warranty-status--expired {
+  background: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+}
+
+.product-table__cell-price {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.product-table__cell-price-line {
+  font-weight: 600;
+  white-space: nowrap;
+  color: #059669;
+}
+
+.product-table__cell-order {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.product-table__cell-order-icon {
+  flex-shrink: 0;
+  color: #2563eb;
+  font-size: 1.25rem;
+}
+
+.product-table__cell-order-title {
+  font-weight: 600;
+  color: #111827;
+}
+
+.product-table__cell-order-date {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.product-table__cell-cart-wrap {
+  display: block;
+  width: 100%;
+}
+
+/* Empty state */
+.product-table__empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+}
+
+.product-table__empty-icon {
+  color: #9ca3af;
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.product-table__empty-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.product-table__empty-text {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* Карточный вид на планшетах и телефонах */
+@media (max-width: 991px) {
+  .product-table__wrapper {
+    max-height: none;
+    overflow: visible;
+    padding: 0;
+  }
+
+  .product-table__table {
+    display: block;
+  }
+
+  .product-table__thead {
+    display: none;
+  }
+
+  .product-table__tbody {
+    display: block;
+  }
+
+  .product-table__tbody .product-table__tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem 0.75rem;
+    align-items: start;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    padding: 0.4rem 0.75rem;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .product-table__tbody .product-table__tr:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .product-table__tbody .product-table__tr:last-child {
+    margin-bottom: 0;
+  }
+
+  .product-table__td {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.2rem 0;
+    border: none !important;
+    min-height: 0;
+  }
+
+  .product-table__td:nth-child(1) {
+    grid-column: 1 / -1;
+    padding-bottom: 0.15rem;
+    border-bottom: 1px solid #f3f4f6 !important;
+  }
+
+  .product-table__td:nth-child(2),
+  .product-table__td:nth-child(3) {
+    padding-top: 0.15rem;
+  }
+
+  .product-table__td:nth-child(4),
+  .product-table__td:nth-child(5) {
+    padding-top: 0.1rem;
+  }
+
+  .product-table__td:nth-child(6) {
+    grid-column: 1 / -1;
+    padding-top: 0.35rem;
+    padding-bottom: 0;
+  }
+
+  .product-table__td::before {
+    content: attr(data-label);
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: #9ca3af;
+    margin-bottom: 0.1rem;
+  }
+
+  .product-table__td--product::before {
+    font-size: 0.65rem;
+  }
+
+  .product-table__td--cart {
+    align-items: stretch;
+  }
+
+  .product-table__td--cart::before {
+    display: none;
+  }
+
+  .product-table__td--cart .product-table__cell-cart-wrap {
+    width: 100%;
+  }
+
+  .product-table__cell-product {
+    gap: 0.35rem;
+  }
+
+  .product-table__cell-product-icon {
+    min-width: 28px;
+    min-height: 28px;
+    padding: 0.25rem;
+  }
+
+  .product-table__cell-product-title {
+    font-size: 0.875rem;
+    line-height: 1.25;
+  }
+
+  .product-table__cell-product-serial {
+    font-size: 0.7rem;
+  }
+
+  .product-table__cell-product-badge {
+    padding: 0.15rem 0.4rem;
+    margin-top: 0.15rem;
+    font-size: 0.65rem;
+  }
+
+  .product-table__cell-warranty-label {
+    margin-bottom: 0.05rem;
+    font-size: 0.8rem;
+  }
+
+  .product-table__cell-warranty-date {
+    font-size: 0.8rem;
+  }
+
+  .product-table__cell-warranty-status {
+    padding: 0.15rem 0.4rem;
+    margin-top: 0.1rem;
+    font-size: 0.65rem;
+  }
+
+  .product-table__cell-order-icon {
+    margin-right: 0.4rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .product-table__tbody .product-table__tr {
+    padding: 0.35rem 0.5rem;
+    margin-bottom: 0.4rem;
+    gap: 0.2rem 0.5rem;
+  }
+
+  .product-table__td {
+    padding: 0.15rem 0;
+  }
+
+  .product-table__td:nth-child(1) {
+    padding-bottom: 0.1rem;
+  }
+
+  .product-table__td:nth-child(6) {
+    padding-top: 0.25rem;
+  }
+
+  .product-table__td::before {
+    font-size: 0.55rem;
+    margin-bottom: 0.05rem;
+  }
+}

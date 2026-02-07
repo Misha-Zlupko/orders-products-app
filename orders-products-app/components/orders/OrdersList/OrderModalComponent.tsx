@@ -57,7 +57,7 @@ export default function OrderModal({ order, onDelete }: OrderModalProps) {
         acc.uah += amountUAH;
         return acc;
       },
-      { usd: 0, uah: 0 }
+      { usd: 0, uah: 0 },
     );
 
     return { totalUSD: totals.usd, totalUAH: totals.uah };
@@ -106,8 +106,14 @@ export default function OrderModal({ order, onDelete }: OrderModalProps) {
                   </div>
                 </div>
 
-                {order.description && (
-                  <p className="card-text mb-4">{order.description}</p>
+                {(order.descriptionKey
+                  ? t(order.descriptionKey, order.descriptionParams)
+                  : order.description) && (
+                  <p className="card-text mb-4">
+                    {order.descriptionKey
+                      ? t(order.descriptionKey, order.descriptionParams)
+                      : order.description}
+                  </p>
                 )}
 
                 <h6 className="mb-3">{t("orders.productsInOrder")}</h6>

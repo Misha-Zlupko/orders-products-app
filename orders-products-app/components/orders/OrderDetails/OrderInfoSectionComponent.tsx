@@ -60,8 +60,14 @@ export default function OrderInfoSection({ order }: OrderInfoSectionProps) {
     <div className="p-4 border-bottom">
       <div className="mb-4">
         <h4 className="h5 fw-bold mb-2">{getLocalizedTitle()}</h4>
-        {order.description && (
-          <p className="text-muted mb-0">{order.description}</p>
+        {(order.descriptionKey
+          ? t(order.descriptionKey, order.descriptionParams)
+          : order.description) && (
+          <p className="text-muted mb-0">
+            {order.descriptionKey
+              ? t(order.descriptionKey, order.descriptionParams)
+              : order.description}
+          </p>
         )}
       </div>
 

@@ -14,6 +14,7 @@ interface AddToCartButtonProps {
     price: { value: number; symbol: string }[];
     type: string;
     stock?: number;
+    guarantee?: { start: string; end: string };
   };
 }
 
@@ -42,6 +43,7 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
       type: product.type,
       quantity,
       maxQuantity: product.stock ?? 100,
+      guarantee: product.guarantee,
     };
 
     dispatch(addItem(item));

@@ -25,7 +25,7 @@ export function AccountSection({
       {isAuthenticated && u ? (
         <div className="d-flex flex-column gap-2">
           <div
-            className="d-flex align-items-center gap-2 px-3 py-2 rounded"
+            className="d-flex align-items-center gap-2 px-3 py-2 rounded text-white"
             style={{ backgroundColor: "rgb(16, 185, 129)" }}
           >
             <UserIcon />

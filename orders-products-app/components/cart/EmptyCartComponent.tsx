@@ -28,7 +28,7 @@ export default function EmptyCart() {
       <div className="d-flex flex-column flex-sm-row gap-3 justify-content-center">
         <Link
           href="/products"
-          className="btn px-4 py-3"
+          className="btn px-4 py-3 text-white"
           style={{
             backgroundColor: "rgb(16, 185, 129)",
             borderColor: "#10b981",

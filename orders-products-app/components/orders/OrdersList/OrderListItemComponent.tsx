@@ -56,7 +56,7 @@ export default function OrderListItem({
         acc.uah += amountUAH;
         return acc;
       },
-      { usd: 0, uah: 0 }
+      { usd: 0, uah: 0 },
     );
 
     return { totalUSD: totals.usd, totalUAH: totals.uah };
@@ -87,7 +87,9 @@ export default function OrderListItem({
         >
           <div className="card-body">
             <div className="d-flex justify-content-between align-items-start mb-3">
-              <h5 className="card-title mb-0">{getLocalizedTitle()}</h5>
+              <h5 className="card-title mb-0" style={{ width: "85%" }}>
+                {getLocalizedTitle()}
+              </h5>
             </div>
 
             <div className="row">

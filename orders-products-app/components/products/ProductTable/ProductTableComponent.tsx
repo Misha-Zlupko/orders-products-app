@@ -4,6 +4,60 @@ import { Product } from "@/types/product";
 import { useState } from "react";
 import AddToCartButton from "@/components/products/AddToCartButtonComponent";
 import { useLocale } from "@/contexts/LocaleContext";
+import styles from "./ProductTable.module.css";
+
+type SortColumn = "title" | "type" | "guarantee" | "price";
+
+function SortArrow({
+  column,
+  sortBy,
+  sortOrder,
+}: {
+  column: SortColumn;
+  sortBy: SortColumn;
+  sortOrder: "asc" | "desc";
+}) {
+  if (sortBy !== column) {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="15"
+        height="15"
+        fill="currentColor"
+        className="bi bi-arrow-down-up ms-2 text-muted opacity-50"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fillRule="evenodd"
+          d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4 4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5"
+        />
+      </svg>
+    );
+  }
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="25"
+      height="25"
+      fill="currentColor"
+      className="text-primary"
+      style={{ minWidth: 20, minHeight: 20 }}
+      viewBox="0 0 16 16"
+    >
+      {sortOrder === "asc" ? (
+        <path
+          fillRule="evenodd"
+          d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4"
+        />
+      ) : (
+        <path
+          fillRule="evenodd"
+          d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5"
+        />
+      )}
+    </svg>
+  );
+}
 
 interface ProductTableProps {
   products: Product[];
@@ -12,9 +66,7 @@ interface ProductTableProps {
 export default function ProductTable({ products }: ProductTableProps) {
   const { t, locale } = useLocale();
   const localeTag = locale === "uk" ? "uk-UA" : "en-GB";
-  const [sortBy, setSortBy] = useState<
-    "title" | "type" | "guarantee" | "price"
-  >("title");
+  const [sortBy, setSortBy] = useState<SortColumn>("title");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const formatDate = (dateString: string) => {
@@ -33,7 +85,7 @@ export default function ProductTable({ products }: ProductTableProps) {
     return priceObj ? priceObj.value : 0;
   };
 
-  const handleSort = (column: "title" | "type" | "guarantee" | "price") => {
+  const handleSort = (column: SortColumn) => {
     if (sortBy === column) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -72,175 +124,115 @@ export default function ProductTable({ products }: ProductTableProps) {
         ? 1
         : -1
       : aValue < bValue
-      ? 1
-      : -1;
+        ? 1
+        : -1;
   });
-
-  const SortArrow = ({ column }: { column: typeof sortBy }) => {
-    if (sortBy !== column) {
-      return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="15"
-          height="15"
-          fill="currentColor"
-          className="bi bi-arrow-down-up ms-2 text-muted opacity-50"
-          viewBox="0 0 16 16"
-        >
-          <path
-            fillRule="evenodd"
-            d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4 4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5"
-          />
-        </svg>
-      );
-    }
-
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="25"
-        height="25"
-        fill="currentColor"
-        className={`${sortOrder === "asc" ? "text-primary" : "text-primary"}`}
-        style={{ minWidth: 20, minHeight: 20 }}
-        viewBox="0 0 16 16"
-      >
-        {sortOrder === "asc" ? (
-          <path
-            fillRule="evenodd"
-            d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4"
-          />
-        ) : (
-          <path
-            fillRule="evenodd"
-            d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5"
-          />
-        )}
-      </svg>
-    );
-  };
 
   if (products.length === 0) {
     return (
-      <div className="text-center py-5">
-        <div className="text-muted mb-3">
-          <i className="bi bi-search display-1"></i>
+      <div className={styles["product-table__empty"]}>
+        <div className={styles["product-table__empty-icon"]}>
+          <i className="bi bi-search" aria-hidden />
         </div>
-        <h4>{t("products.noProducts")}</h4>
-        <p className="text-muted">{t("products.tryFilter")}</p>
+        <h4 className={styles["product-table__empty-title"]}>
+          {t("products.noProducts")}
+        </h4>
+        <p className={styles["product-table__empty-text"]}>
+          {t("products.tryFilter")}
+        </p>
       </div>
     );
   }
 
   return (
-    <div
-      className="table-responsive rounded-3 shadow-sm"
-      style={{ maxHeight: "min(70vh, 600px)", overflow: "auto" }}
-    >
-      <table className="table table-hover align-middle mb-0">
-        <thead className="table-light">
+    <div className={`${styles["product-table__wrapper"]} table-responsive rounded-3`}>
+      <table className={`${styles["product-table__table"]} table-hover`}>
+        <thead className={styles["product-table__thead"]}>
           <tr>
             <th
-              className="border-0 py-3 cursor-pointer hover-text-primary"
+              className={styles["product-table__th"]}
               onClick={() => handleSort("title")}
               style={{ textAlign: "center" }}
             >
-              <div className="d-flex align-items-center justify-content-center">
+              <div className={styles["product-table__th-content"]}>
                 <span className="text-nowrap text-secondary text-uppercase small fw-semibold">
                   {t("products.tableProductName")}
                 </span>
-                <div
-                  style={{
-                    width: 20,
-                    height: 20,
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <SortArrow column="title" />
-                </div>
+                <span className={styles["product-table__th-sort-icon"]}>
+                  <SortArrow
+                    column="title"
+                    sortBy={sortBy}
+                    sortOrder={sortOrder}
+                  />
+                </span>
               </div>
             </th>
-
             <th
-              className="border-0 py-3 cursor-pointer hover-text-primary"
+              className={styles["product-table__th"]}
               onClick={() => handleSort("type")}
               style={{ textAlign: "center" }}
             >
-              <div className="d-flex align-items-center justify-content-center">
+              <div className={styles["product-table__th-content"]}>
                 <span className="text-nowrap text-secondary text-uppercase small fw-semibold">
                   {t("products.tableType")}
                 </span>
-                <div
-                  style={{
-                    width: 20,
-                    height: 20,
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <SortArrow column="type" />
-                </div>
+                <span className={styles["product-table__th-sort-icon"]}>
+                  <SortArrow
+                    column="type"
+                    sortBy={sortBy}
+                    sortOrder={sortOrder}
+                  />
+                </span>
               </div>
             </th>
-
             <th
-              className="border-0 py-3 cursor-pointer hover-text-primary"
+              className={styles["product-table__th"]}
               onClick={() => handleSort("guarantee")}
               style={{ textAlign: "center" }}
             >
-              <div className="d-flex align-items-center justify-content-center">
+              <div className={styles["product-table__th-content"]}>
                 <span className="text-nowrap text-secondary text-uppercase small fw-semibold">
                   {t("products.tableWarranty")}
                 </span>
-                <div
-                  style={{
-                    width: 20,
-                    height: 20,
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <SortArrow column="guarantee" />
-                </div>
+                <span className={styles["product-table__th-sort-icon"]}>
+                  <SortArrow
+                    column="guarantee"
+                    sortBy={sortBy}
+                    sortOrder={sortOrder}
+                  />
+                </span>
               </div>
             </th>
-
             <th
-              className="border-0 py-3 cursor-pointer hover-text-primary"
+              className={styles["product-table__th"]}
               onClick={() => handleSort("price")}
               style={{ textAlign: "center" }}
             >
-              <div className="d-flex align-items-center justify-content-center">
+              <div className={styles["product-table__th-content"]}>
                 <span className="text-nowrap text-secondary text-uppercase small fw-semibold">
                   {t("products.tablePrice")}
                 </span>
-                <div
-                  style={{
-                    width: 20,
-                    height: 20,
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <SortArrow column="price" />
-                </div>
+                <span className={styles["product-table__th-sort-icon"]}>
+                  <SortArrow
+                    column="price"
+                    sortBy={sortBy}
+                    sortOrder={sortOrder}
+                  />
+                </span>
               </div>
             </th>
-
-            <th className="border-0 py-3" style={{ textAlign: "center" }}>
-              <div className="d-flex align-items-center justify-content-center">
+            <th className={styles["product-table__th"]} style={{ textAlign: "center" }}>
+              <div className={styles["product-table__th-content"]}>
                 <span className="text-secondary text-uppercase small fw-semibold">
                   {t("products.tableOrderTitle")}
                 </span>
               </div>
             </th>
-
             <th
-              className="border-0 py-3"
+              className={styles["product-table__th"]}
               style={{ textAlign: "center", width: "150px" }}
             >
-              <div className="d-flex align-items-center justify-content-center">
+              <div className={styles["product-table__th-content"]}>
                 <span className="text-secondary text-uppercase small fw-semibold">
                   {t("products.tableCart")}
                 </span>
@@ -248,46 +240,47 @@ export default function ProductTable({ products }: ProductTableProps) {
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={styles["product-table__tbody"]}>
           {sortedProducts.map((product) => {
             const guaranteeEnd = new Date(product.guarantee.end);
             const today = new Date();
             const isGuaranteeActive = guaranteeEnd > today;
             const daysLeft = Math.ceil(
-              (guaranteeEnd.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+              (guaranteeEnd.getTime() - today.getTime()) /
+                (1000 * 60 * 60 * 24),
             );
 
             const usdPrice = getPrice(product, "USD");
             const uahPrice = getPrice(product, "UAH");
 
             return (
-              <tr key={product.id} className="border-bottom">
-                <td className="py-3">
-                  <div className="d-flex align-items-center">
-                    <div
-                      style={{
-                        backgroundColor: "#10b981",
-                        minWidth: "40px",
-                        minHeight: "40px",
-                      }}
-                      className="d-flex align-items-center justify-content-center me-3 rounded text-white p-2"
-                    >
-                      <i className="bi bi-cpu fs-5"></i>
+              <tr key={product.id} className={styles["product-table__tr"]}>
+                <td
+                  className={`${styles["product-table__td"]} ${styles["product-table__td--product"]}`}
+                  data-label={t("products.tableProductName")}
+                >
+                  <div className={styles["product-table__cell-product"]}>
+                    <div className={styles["product-table__cell-product-icon"]}>
+                      <i className="bi bi-cpu" aria-hidden />
                     </div>
-                    <div>
-                      <div className="fw-semibold text-dark">
+                    <div className={styles["product-table__cell-product-body"]}>
+                      <div className={styles["product-table__cell-product-title"]}>
                         {product.title}
                       </div>
-                      <div className="small text-muted">
+                      <div className={styles["product-table__cell-product-serial"]}>
                         {t("products.serial")} {product.serialNumber}
                       </div>
                       <div>
                         {product.isNew === 1 ? (
-                          <span className="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-1 mt-1">
+                          <span
+                            className={`${styles["product-table__cell-product-badge"]} ${styles["product-table__cell-product-badge--new"]}`}
+                          >
                             {t("products.badgeNew")}
                           </span>
                         ) : (
-                          <span className="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3 py-1 mt-1">
+                          <span
+                            className={`${styles["product-table__cell-product-badge"]} ${styles["product-table__cell-product-badge--used"]}`}
+                          >
                             {t("products.badgeUsed")}
                           </span>
                         )}
@@ -295,76 +288,97 @@ export default function ProductTable({ products }: ProductTableProps) {
                     </div>
                   </div>
                 </td>
-
-                <td className="py-3">
-                  <span
-                    className="badge bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-2"
-                    style={{ backgroundColor: "rgb(16, 185, 129)" }}
-                  >
+                <td
+                  className={styles["product-table__td"]}
+                  data-label={t("products.tableType")}
+                >
+                  <span className={styles["product-table__cell-type-badge"]}>
                     {getTypeLabel(product.type)}
                   </span>
                 </td>
-
-                <td className="py-3">
-                  <div className="d-flex flex-column">
-                    <div className="small text-muted mb-1">
+                <td
+                  className={styles["product-table__td"]}
+                  data-label={t("products.tableWarranty")}
+                >
+                  <div className={styles["product-table__cell-warranty"]}>
+                    <div className={styles["product-table__cell-warranty-label"]}>
                       {t("products.warrantyEnd")}
                     </div>
                     <div
-                      className={`fw-semibold ${
-                        isGuaranteeActive ? "text-success" : "text-danger"
+                      className={`${styles["product-table__cell-warranty-date"]} ${
+                        isGuaranteeActive
+                          ? styles["product-table__cell-warranty-date--active"]
+                          : styles["product-table__cell-warranty-date--expired"]
                       }`}
                     >
                       {formatDate(product.guarantee.end)}
                     </div>
                     {isGuaranteeActive ? (
-                      <div className="d-inline-flex align-items-center mt-1 bg-success bg-opacity-10 text-success rounded-pill px-3 py-1">
-                        <i className="bi bi-shield-check me-1"></i>
+                      <div
+                        className={`${styles["product-table__cell-warranty-status"]} ${styles["product-table__cell-warranty-status--active"]}`}
+                      >
+                        <i className="bi bi-shield-check me-1" aria-hidden />
                         {t("products.warrantyDaysLeft", { count: daysLeft })}
                       </div>
                     ) : (
-                      <div className="d-inline-flex align-items-center mt-1 bg-danger bg-opacity-10 text-danger rounded-pill px-3 py-1">
-                        <i className="bi bi-shield-exclamation me-1"></i>
+                      <div
+                        className={`${styles["product-table__cell-warranty-status"]} ${styles["product-table__cell-warranty-status--expired"]}`}
+                      >
+                        <i className="bi bi-shield-exclamation me-1" aria-hidden />
                         {t("products.warrantyExpired")}
                       </div>
                     )}
                   </div>
                 </td>
-
-                <td className="py-3">
-                  <div className="d-flex flex-column">
-                    <div className="fw-semibold text-nowrap text-success">
+                <td
+                  className={styles["product-table__td"]}
+                  data-label={t("products.tablePrice")}
+                >
+                  <div className={styles["product-table__cell-price"]}>
+                    <div className={styles["product-table__cell-price-line"]}>
                       {usdPrice.toLocaleString()} USD
                     </div>
-                    <div className="fw-semibold text-nowrap text-success">
+                    <div className={styles["product-table__cell-price-line"]}>
                       {uahPrice.toLocaleString()} UAH
                     </div>
                   </div>
                 </td>
-
-                <td className="py-3">
-                  <div className="d-flex align-items-center">
-                    <i className="bi bi-receipt me-3 text-primary fs-5"></i>
+                <td
+                  className={styles["product-table__td"]}
+                  data-label={t("products.tableOrderTitle")}
+                >
+                  <div className={styles["product-table__cell-order"]}>
+                    <i
+                      className={`bi bi-receipt ${styles["product-table__cell-order-icon"]}`}
+                      aria-hidden
+                    />
                     <div>
-                      <div className="fw-semibold text-dark">
+                      <div className={styles["product-table__cell-order-title"]}>
                         {product.orderTitle}
                       </div>
-                      <div className="small text-muted">
+                      <div className={styles["product-table__cell-order-date"]}>
                         {formatDate(product.date)}
                       </div>
                     </div>
                   </div>
                 </td>
-                <td className="py-3" style={{ textAlign: "center" }}>
-                  <AddToCartButton
+                <td
+                  className={`${styles["product-table__td"]} ${styles["product-table__td--cart"]}`}
+                  data-label={t("products.tableCart")}
+                  style={{ textAlign: "center" }}
+                >
+                  <div className={styles["product-table__cell-cart-wrap"]}>
+                    <AddToCartButton
                     product={{
                       id: product.id,
                       title: product.title,
                       price: product.price,
                       type: product.type,
                       stock: 100,
+                      guarantee: product.guarantee,
                     }}
                   />
+                  </div>
                 </td>
               </tr>
             );

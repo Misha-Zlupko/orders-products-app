@@ -17,6 +17,15 @@ export default function DeleteOrderModal({
   onCancel,
 }: DeleteOrderModalProps) {
   const { t } = useLocale();
+
+  const getLocalizedTitle = () => {
+    if (!order) return "";
+    if (order.titleKey) {
+      return t(order.titleKey, order.titleParams);
+    }
+    return order.title;
+  };
+
   if (!isOpen) {
     return null;
   }
@@ -57,7 +66,8 @@ export default function DeleteOrderModal({
 
             <p className="mb-2 fs-5">
               {t("orders.deleteModalConfirm")}{" "}
-              <strong className="text-dark">{`"${order?.title}"`}</strong>?
+              <strong className="text-dark">{`"${getLocalizedTitle()}"`}</strong>
+              ?
             </p>
 
             <p className="text-muted mb-0">

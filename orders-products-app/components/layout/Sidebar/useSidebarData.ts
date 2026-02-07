@@ -1,15 +1,19 @@
 import { useMemo } from "react";
-import { navItems, statsItems } from "./sidebarData";
+import { navItems, buildStatsItems } from "./sidebarData";
 import { CartIcon } from "./SidebarIconsComponent";
 
 interface UseSidebarDataProps {
   cartItemCount: number;
   cartTotalPrice: number;
+  ordersCount: number;
+  productsCount: number;
 }
 
 export function useSidebarData({
   cartItemCount,
   cartTotalPrice,
+  ordersCount,
+  productsCount,
 }: UseSidebarDataProps) {
   const navigationItems = useMemo(
     () => [
@@ -22,6 +26,11 @@ export function useSidebarData({
       },
     ],
     [cartItemCount]
+  );
+
+  const statsItems = useMemo(
+    () => buildStatsItems(ordersCount, productsCount),
+    [ordersCount, productsCount]
   );
 
   const cartStats = useMemo(() => {

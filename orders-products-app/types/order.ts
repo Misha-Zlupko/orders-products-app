@@ -20,6 +20,9 @@ export interface Order {
   titleParams?: Record<string, string>;
   date: string;
   description?: string;
+  /** Ключ i18n для опису (наприклад cart.orderDescFromCart) — показується в поточній мові */
+  descriptionKey?: string;
+  descriptionParams?: Record<string, string | number>;
   products: OrderItem[];
   total?: number;
   currency?: string;

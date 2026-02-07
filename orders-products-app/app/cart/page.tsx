@@ -75,11 +75,12 @@ export default function CartPage() {
           titleKey: "cart.orderTitleFromCart",
           titleParams: { date: orderDateForTitle },
           date: orderDate,
-          description: t("cart.orderDescFromCart"),
+          descriptionKey: "cart.orderDescFromCart",
           products: cart.items.map((item) => ({
             id: item.id,
             name: item.title,
             type: item.type,
+            warrantyDate: item.guarantee?.end,
             price: item.price,
             currency: item.currency,
             priceUSD:
