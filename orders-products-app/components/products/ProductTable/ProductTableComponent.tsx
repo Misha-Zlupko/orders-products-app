@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Product } from "@/types/product";
 import { useState } from "react";
 import AddToCartButton from "@/components/products/AddToCartButtonComponent";
@@ -7,6 +8,39 @@ import { useLocale } from "@/contexts/LocaleContext";
 import styles from "./ProductTable.module.css";
 
 type SortColumn = "title" | "type" | "guarantee" | "price";
+
+const TABLE_COLUMNS: Array<{
+  id: string;
+  labelKey: "products.tableProductName" | "products.tableType" | "products.tableWarranty" | "products.tablePrice" | "products.tableOrderTitle" | "products.tableCart";
+  sortColumn?: SortColumn;
+  width?: string;
+}> = [
+  { id: "product", labelKey: "products.tableProductName", sortColumn: "title" },
+  { id: "type", labelKey: "products.tableType", sortColumn: "type" },
+  { id: "warranty", labelKey: "products.tableWarranty", sortColumn: "guarantee" },
+  { id: "price", labelKey: "products.tablePrice", sortColumn: "price" },
+  { id: "order", labelKey: "products.tableOrderTitle" },
+  { id: "cart", labelKey: "products.tableCart", width: "150px" },
+];
+
+const PLACEHOLDER_SRC = "/product-placeholder.png";
+const IMG_SIZE = 56;
+
+function ProductImage({ photo, alt }: { photo: string; alt: string }) {
+  const [error, setError] = useState(false);
+  const src = error ? PLACEHOLDER_SRC : `/${photo}`;
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      width={IMG_SIZE}
+      height={IMG_SIZE}
+      loading="lazy"
+      className={styles["product-table__cell-product-img"]}
+      onError={() => setError(true)}
+    />
+  );
+}
 
 function SortArrow({
   column,
@@ -151,98 +185,29 @@ export default function ProductTable({ products }: ProductTableProps) {
       <table className={`${styles["product-table__table"]} table-hover`}>
         <thead className={styles["product-table__thead"]}>
           <tr>
-            <th
-              className={styles["product-table__th"]}
-              onClick={() => handleSort("title")}
-              style={{ textAlign: "center" }}
-            >
-              <div className={styles["product-table__th-content"]}>
-                <span className="text-nowrap text-secondary text-uppercase small fw-semibold">
-                  {t("products.tableProductName")}
-                </span>
-                <span className={styles["product-table__th-sort-icon"]}>
-                  <SortArrow
-                    column="title"
-                    sortBy={sortBy}
-                    sortOrder={sortOrder}
-                  />
-                </span>
-              </div>
-            </th>
-            <th
-              className={styles["product-table__th"]}
-              onClick={() => handleSort("type")}
-              style={{ textAlign: "center" }}
-            >
-              <div className={styles["product-table__th-content"]}>
-                <span className="text-nowrap text-secondary text-uppercase small fw-semibold">
-                  {t("products.tableType")}
-                </span>
-                <span className={styles["product-table__th-sort-icon"]}>
-                  <SortArrow
-                    column="type"
-                    sortBy={sortBy}
-                    sortOrder={sortOrder}
-                  />
-                </span>
-              </div>
-            </th>
-            <th
-              className={styles["product-table__th"]}
-              onClick={() => handleSort("guarantee")}
-              style={{ textAlign: "center" }}
-            >
-              <div className={styles["product-table__th-content"]}>
-                <span className="text-nowrap text-secondary text-uppercase small fw-semibold">
-                  {t("products.tableWarranty")}
-                </span>
-                <span className={styles["product-table__th-sort-icon"]}>
-                  <SortArrow
-                    column="guarantee"
-                    sortBy={sortBy}
-                    sortOrder={sortOrder}
-                  />
-                </span>
-              </div>
-            </th>
-            <th
-              className={styles["product-table__th"]}
-              onClick={() => handleSort("price")}
-              style={{ textAlign: "center" }}
-            >
-              <div className={styles["product-table__th-content"]}>
-                <span className="text-nowrap text-secondary text-uppercase small fw-semibold">
-                  {t("products.tablePrice")}
-                </span>
-                <span className={styles["product-table__th-sort-icon"]}>
-                  <SortArrow
-                    column="price"
-                    sortBy={sortBy}
-                    sortOrder={sortOrder}
-                  />
-                </span>
-              </div>
-            </th>
-            <th
-              className={styles["product-table__th"]}
-              style={{ textAlign: "center" }}
-            >
-              <div className={styles["product-table__th-content"]}>
-                <span className="text-secondary text-uppercase small fw-semibold">
-                  {t("products.tableOrderTitle")}
-                </span>
-              </div>
-            </th>
-            <th
-              className={styles["product-table__th"]}
-              style={{ textAlign: "center", width: "150px" }}
-            >
-              <div className={styles["product-table__th-content"]}>
-                <span className="text-secondary text-uppercase small fw-semibold">
-                  {t("products.tableCart")}
-                </span>
-              </div>
-            </th>
+            {TABLE_COLUMNS.map(({ id, labelKey, sortColumn, width }) => (
+              <th
+                key={id}
+                className={styles["product-table__th"]}
+                onClick={sortColumn ? () => handleSort(sortColumn) : undefined}
+                style={{ textAlign: "center", ...(width ? { width } : {}) }}
+              >
+                <div className={styles["product-table__th-content"]}>
+                  <span className={`text-secondary text-uppercase small fw-semibold ${sortColumn ? "text-nowrap" : ""}`}>
+                    {t(labelKey)}
+                  </span>
+                  {sortColumn && (
+                    <span className={styles["product-table__th-sort-icon"]}>
+                      <SortArrow
+                        column={sortColumn}
+                        sortBy={sortBy}
+                        sortOrder={sortOrder}
+                      />
+                    </span>
+                  )}
+                </div>
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody className={styles["product-table__tbody"]}>
@@ -266,7 +231,7 @@ export default function ProductTable({ products }: ProductTableProps) {
                 >
                   <div className={styles["product-table__cell-product"]}>
                     <div className={styles["product-table__cell-product-icon"]}>
-                      <i className="bi bi-cpu" aria-hidden />
+                      <ProductImage photo={product.photo} alt={product.title} />
                     </div>
                     <div className={styles["product-table__cell-product-body"]}>
                       <div

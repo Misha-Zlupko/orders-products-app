@@ -27,31 +27,34 @@ const OrdersChartComponent = dynamic(
   }
 );
 
-const OrdersIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
-    fill="currentColor"
-    viewBox="0 0 16 16"
-    className="me-2"
-  >
-    <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5z" />
-  </svg>
-);
-
-const ProductsIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
-    fill="currentColor"
-    viewBox="0 0 16 16"
-    className="me-2"
-  >
-    <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
-  </svg>
-);
+const SECTION_ICONS = {
+  orders: () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      fill="currentColor"
+      viewBox="0 0 16 16"
+      className="me-2"
+      aria-hidden
+    >
+      <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5z" />
+    </svg>
+  ),
+  products: () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      fill="currentColor"
+      viewBox="0 0 16 16"
+      className="me-2"
+      aria-hidden
+    >
+      <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+    </svg>
+  ),
+} as const;
 
 export default function Home() {
   const { user } = useAuth();
@@ -72,6 +75,17 @@ export default function Home() {
       cancelled = true;
     };
   }, []);
+
+  const sectionLinks = [
+    { href: "/orders", labelKey: "nav.orders" as const, iconKey: "orders" as const, count: ordersCount },
+    { href: "/products", labelKey: "nav.products" as const, iconKey: "products" as const, count: productsCount !== null ? productsCount : "…" },
+  ];
+
+  const indicators = [
+    { labelKey: "home.ordersLabel" as const, valueKey: "home.ordersCount" as const, count: ordersCount, max: 20, widthFactor: 5, barClass: "" },
+    { labelKey: "home.productsLabel" as const, valueKey: "home.productsCount" as const, count: productsCount ?? 0, max: 50, widthFactor: 3, barClass: "bg-info" },
+    { labelKey: "home.sessionsLabel" as const, valueKey: "home.sessionsActiveCount" as const, count: sessionsCount, max: 10, widthFactor: 20, barClass: "bg-primary" },
+  ];
 
   return (
     <div className="container-fluid py-4 px-3">
@@ -106,38 +120,29 @@ export default function Home() {
             <div className="card-header bg-white border-bottom fw-semibold">
               {t("home.sectionsTitle")}
             </div>
-            <div className="list-group list-group-flush">
-              <Link
-                href="/orders"
-                className="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3"
-              >
-                <span className="d-flex align-items-center">
-                  <OrdersIcon />
-                  {t("nav.orders")}
-                </span>
-                <span
-                  className="badge rounded-pill"
-                  style={{ backgroundColor: "rgb(16, 185, 129)" }}
-                >
-                  {ordersCount}
-                </span>
-              </Link>
-              <Link
-                href="/products"
-                className="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3"
-              >
-                <span className="d-flex align-items-center">
-                  <ProductsIcon />
-                  {t("nav.products")}
-                </span>
-                <span
-                  className="badge rounded-pill"
-                  style={{ backgroundColor: "rgb(16, 185, 129)" }}
-                >
-                  {productsCount !== null ? productsCount : "…"}
-                </span>
-              </Link>
-            </div>
+            <nav aria-label={t("home.sectionsTitle")}>
+              <ul className="list-group list-group-flush list-unstyled mb-0">
+                {sectionLinks.map(({ href, labelKey, iconKey, count }) => (
+                  <li key={href}>
+                    <Link
+                      href={href}
+                      className="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 text-decoration-none text-body"
+                    >
+                      <span className="d-flex align-items-center">
+                        {SECTION_ICONS[iconKey]()}
+                        {t(labelKey)}
+                      </span>
+                      <span
+                        className="badge rounded-pill"
+                        style={{ backgroundColor: "rgb(16, 185, 129)" }}
+                      >
+                        {count}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
         </div>
 
@@ -208,84 +213,34 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="card shadow-sm mt-4 animate__animated animate__fadeInUp animate__delay-2s">
-        <div className="card-header bg-white border-bottom fw-semibold">
+      <section aria-labelledby="home-indicators-title" className="card shadow-sm mt-4 animate__animated animate__fadeInUp animate__delay-2s">
+        <h2 id="home-indicators-title" className="card-header bg-white border-bottom fw-semibold mb-0">
           {t("home.indicatorsTitle")}
-        </div>
+        </h2>
         <div className="card-body">
-          <div className="mb-3">
-            <div className="d-flex justify-content-between mb-1">
-              <span className="small text-muted">{t("home.ordersLabel")}</span>
-              <span className="small fw-medium">
-                {t("home.ordersCount", { count: ordersCount })}
-              </span>
-            </div>
-            <div className="progress" style={{ height: "8px" }}>
-              <div
-                className="progress-bar"
-                style={{
-                  backgroundColor: "rgb(16, 185, 129)",
-                  width: `${Math.min(ordersCount * 5, 100)}%`,
-                }}
-                role="progressbar"
-                aria-valuenow={ordersCount}
-                aria-valuemin={0}
-                aria-valuemax={20}
-              />
-            </div>
-          </div>
-          <div className="mb-3">
-            <div className="d-flex justify-content-between mb-1">
-              <span className="small text-muted">
-                {t("home.productsLabel")}
-              </span>
-              <span className="small fw-medium">
-                {productsCount !== null
-                  ? t("home.productsCount", { count: productsCount })
-                  : "…"}
-              </span>
-            </div>
-            <div className="progress" style={{ height: "8px" }}>
-              <div
-                className="progress-bar bg-info"
-                role="progressbar"
-                style={{
-                  width: `${
-                    productsCount !== null
-                      ? Math.min(productsCount * 3, 100)
-                      : 0
-                  }%`,
-                }}
-                aria-valuenow={productsCount ?? 0}
-                aria-valuemin={0}
-                aria-valuemax={50}
-              />
-            </div>
-          </div>
-          <div>
-            <div className="d-flex justify-content-between mb-1">
-              <span className="small text-muted">
-                {t("home.sessionsLabel")}
-              </span>
-              <span className="small fw-medium">
-                {t("home.sessionsActiveCount", { count: sessionsCount })}
-              </span>
-            </div>
-            <div className="progress" style={{ height: "8px" }}>
-              <div
-                className="progress-bar bg-primary"
-                role="progressbar"
-                style={{
-                  width: `${Math.min(sessionsCount * 20, 100)}%`,
-                }}
-                aria-valuenow={sessionsCount}
-                aria-valuemin={0}
-                aria-valuemax={10}
-              />
-            </div>
-          </div>
+          <ul className="list-unstyled mb-0">
+            {indicators.map(({ labelKey, valueKey, count, max, widthFactor, barClass }) => (
+              <li key={labelKey} className="mb-3">
+                <div className="d-flex justify-content-between mb-1">
+                  <span className="small text-muted">{t(labelKey)}</span>
+                  <span className="small fw-medium">
+                    {typeof count === "number" ? t(valueKey, { count }) : "…"}
+                  </span>
+                </div>
+                <div className="progress" style={{ height: "8px" }} role="progressbar" aria-valuenow={count} aria-valuemin={0} aria-valuemax={max}>
+                  <div
+                    className={`progress-bar ${barClass || ""}`.trim()}
+                    style={{
+                      width: typeof count === "number" ? `${Math.min(count * widthFactor, 100)}%` : "0%",
+                      ...(barClass ? {} : { backgroundColor: "rgb(16, 185, 129)" }),
+                    }}
+                  />
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
